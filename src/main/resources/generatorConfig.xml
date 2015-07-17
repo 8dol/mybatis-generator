@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="ActivityTables" targetRuntime="com.edol.generator.SpringDataSimpleImpl">
+        <commentGenerator type="com.edol.generator.CommentGenerator">
+            <property name="suppressDate" value="true" />
+            <!--<property name="detailComment" value="true" />-->
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/saledb?relaxAutoCommit=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"
+                        userId="saledb"
+                        password="saledb">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.edol.b2c.domain" targetProject="src/main/java">
+            <!--<property name="enableSubPackages" value="true" />-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mybatis"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.edol.b2c.dao"  targetProject="src/main/java">
+            <!--<property name="enableSubPackages" value="true" />-->
+        </javaClientGenerator>
+
+        <table tableName="t_activities_reward_tickets" domainObjectName="activity1.ActivityRewordTicket" >
+            <!--<columnRenamingRule searchString="^CUST_" replaceString="" />-->
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+    </context>
+</generatorConfiguration>
