@@ -1,5 +1,6 @@
 package com.edol.generator;
 
+import com.edol.generator.javamapper.EmptyJavaClientGenerator;
 import com.edol.generator.model.SpringDataModelGenerator;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
@@ -51,22 +52,7 @@ public class SpringDataSimpleImpl extends IntrospectedTableMyBatis3Impl {
             return null;
         }
 
-        String type = context.getJavaClientGeneratorConfiguration()
-                .getConfigurationType();
-
-        AbstractJavaClientGenerator javaGenerator;
-        if ("XMLMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
-            javaGenerator = new SimpleJavaClientGenerator();
-        } else if ("ANNOTATEDMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
-            javaGenerator = new SimpleAnnotatedClientGenerator();
-        } else if ("MAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
-            javaGenerator = new SimpleJavaClientGenerator();
-        } else {
-            javaGenerator = (AbstractJavaClientGenerator) ObjectFactory
-                    .createInternalObject(type);
-        }
-
-        return javaGenerator;
+        return new EmptyJavaClientGenerator();
     }
 
     @Override
