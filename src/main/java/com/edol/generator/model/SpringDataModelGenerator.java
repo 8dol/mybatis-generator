@@ -59,6 +59,13 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             }
 
             Field field = getJavaBeansField(introspectedColumn);
+            switch (field.getType().getShortName()) {
+                case "Integer":
+                    field.setType(FullyQualifiedJavaType.getIntInstance());
+                    break;
+                default:
+            }
+
             if (plugins.modelFieldGenerated(field, topLevelClass,
                     introspectedColumn, introspectedTable,
                     Plugin.ModelClassType.BASE_RECORD)) {

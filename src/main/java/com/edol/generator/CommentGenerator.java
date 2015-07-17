@@ -170,10 +170,6 @@ public class CommentGenerator implements org.mybatis.generator.api.CommentGenera
     public void addFieldComment(Field field,
                                 IntrospectedTable introspectedTable,
                                 IntrospectedColumn introspectedColumn) {
-        if (suppressAllComments) {
-            return;
-        }
-
         StringBuilder sb = new StringBuilder();
 
         field.addJavaDocLine("/**");
