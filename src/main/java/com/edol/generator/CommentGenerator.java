@@ -90,8 +90,7 @@ public class CommentGenerator implements org.mybatis.generator.api.CommentGenera
      * Javadoc tag then the Java merge capability of the eclipse plugin will
      * break.
      *
-     * @param javaElement
-     *            the java element
+     * @param javaElement the java element
      */
     protected void addJavadocTag(JavaElement javaElement,
                                  boolean markAsDoNotDelete) {
@@ -174,7 +173,7 @@ public class CommentGenerator implements org.mybatis.generator.api.CommentGenera
 
         field.addJavaDocLine("/**");
 
-        field.addJavaDocLine(" * "+ introspectedColumn.getRemarks());
+        field.addJavaDocLine(" * " + introspectedColumn.getRemarks());
 
         if (detailComment) {
             field.addJavaDocLine(" * 默认值: " + introspectedColumn.getDefaultValue());

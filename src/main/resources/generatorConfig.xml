@@ -3,6 +3,9 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
+<!--
+mvn clean install;mvn mybatis-generator:generate
+-->
 <generatorConfiguration>
     <context id="ActivityTables" targetRuntime="com.edol.generator.SpringDataSimpleImpl">
         <commentGenerator type="com.edol.generator.CommentGenerator">

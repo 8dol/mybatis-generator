@@ -51,6 +51,9 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             }
         }
 
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.Data"));
+        topLevelClass.addAnnotation("@Data");
+
         String rootClass = getRootClass();
         for (IntrospectedColumn introspectedColumn : introspectedColumns) {
             if (RootClassInfo.getInstance(rootClass, warnings)
@@ -63,6 +66,9 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
                 case "Integer":
                     field.setType(FullyQualifiedJavaType.getIntInstance());
                     break;
+                case "String":
+                    topLevelClass.addImportedType("org.hibernate.validator.constraints.Length");
+                    field.addAnnotation(String.format("@Length(max = %d)", introspectedColumn.getLength()));
                 default:
             }
 
