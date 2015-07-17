@@ -20,16 +20,16 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.edol.b2c.domain" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.edol.b2c.domain" targetProject="test/main/java">
             <!--<property name="enableSubPackages" value="true" />-->
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis"  targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mybatis"  targetProject="test/main/resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.edol.b2c.dao"  targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.edol.b2c.dao"  targetProject="test/main/java">
             <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
