@@ -10,6 +10,8 @@ import org.mybatis.generator.codegen.RootClassInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
@@ -17,6 +19,8 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
  * Created by mind on 7/17/15.
  */
 public class SpringDataModelGenerator extends AbstractJavaGenerator {
+
+    private static Pattern Number_Range_Machter = Pattern.compile(".*@Valid\\((.*),(.*)\\).*");
 
     public SpringDataModelGenerator() {
         super();
@@ -65,10 +69,16 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             switch (field.getType().getShortName()) {
                 case "Integer":
                     field.setType(FullyQualifiedJavaType.getIntInstance());
+                    addNumberValidate(topLevelClass, field, introspectedColumn);
                     break;
                 case "String":
                     topLevelClass.addImportedType("org.hibernate.validator.constraints.Length");
                     field.addAnnotation(String.format("@Length(max = %d)", introspectedColumn.getLength()));
+                    break;
+                case "Long":
+                    field.setType(new FullyQualifiedJavaType("long"));
+                    addNumberValidate(topLevelClass, field, introspectedColumn);
+                    break;
                 default:
             }
 
@@ -86,6 +96,23 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             answer.add(topLevelClass);
         }
         return answer;
+    }
+
+    private void addNumberValidate(TopLevelClass topLevelClass, Field field, IntrospectedColumn introspectedColumn) {
+        String remark = introspectedColumn.getRemarks();
+        Matcher matcher = Number_Range_Machter.matcher(remark);
+
+        if (matcher.find()) {
+            Long min = Long.valueOf(matcher.group(1));
+            Long max = Long.valueOf(matcher.group(2));
+
+            topLevelClass.addImportedType("org.hibernate.validator.constraints.Range");
+            field.addAnnotation(String.format("@Range(min = %dL, max = %dL)", min, max));
+
+            if (min < Integer.MIN_VALUE || max > Integer.MAX_VALUE) {
+                field.setType(new FullyQualifiedJavaType("long"));
+            }
+        }
     }
 
     private FullyQualifiedJavaType getSuperClass() {

@@ -9,7 +9,8 @@ mvn clean install;mvn mybatis-generator:generate
 <generatorConfiguration>
     <context id="ActivityTables" targetRuntime="com.edol.generator.SpringDataSimpleImpl">
         <commentGenerator type="com.edol.generator.CommentGenerator">
-            <property name="suppressAllComments" value="true" />
+            <!-- set suppressAllComments will case the xmpmapper don't merged automatic.-->
+            <!--<property name="suppressAllComments" value="false" />-->
             <property name="suppressDate" value="true" />
             <property name="detailComment" value="true" />
         </commentGenerator>
@@ -36,17 +37,20 @@ mvn clean install;mvn mybatis-generator:generate
             <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
-        <table tableName="t_activities" domainObjectName="activity.Activity" >
+        <table tableName="t_rules" domainObjectName="rule.Rule" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
-        <table tableName="t_activities_rewards" domainObjectName="activity.ActivityReword" >
+        <table tableName="t_rule_groups" domainObjectName="rule.RuleGroup" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
-        <table tableName="t_activities_reward_tickets" domainObjectName="activity.ActivityRewordTicket" >
+        <table tableName="t_rule_rewards" domainObjectName="rule.RuleReward" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
+        <table tableName="t_materials" domainObjectName="rule.Material" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
