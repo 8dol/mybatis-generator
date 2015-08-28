@@ -24,16 +24,16 @@ mvn clean install;mvn mybatis-generator:generate
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.edol.b2c.domain" targetProject="test/main/java">
+        <javaModelGenerator targetPackage="com.edol.b2c.domain" targetProject="src/test/java">
             <!--<property name="enableSubPackages" value="true" />-->
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis"  targetProject="test/main/resources">
+        <sqlMapGenerator targetPackage="mybatis"  targetProject="src/test/resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.edol.b2c.dao"  targetProject="test/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.edol.b2c.dao"  targetProject="src/test/java">
             <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
@@ -41,15 +41,15 @@ mvn clean install;mvn mybatis-generator:generate
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
-        <table tableName="t_rule_groups" domainObjectName="rule.RuleGroup" >
+        <table tableName="t_rule_item_groups" domainObjectName="rule.RuleGroup" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
-        <table tableName="t_rule_rewards" domainObjectName="rule.RuleReward" >
+        <table tableName="t_rule_items" domainObjectName="rule.RuleReward" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
-        <table tableName="t_materials" domainObjectName="rule.Material" >
+        <table tableName="t_user_materials" domainObjectName="rule.Material" >
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
     </context>

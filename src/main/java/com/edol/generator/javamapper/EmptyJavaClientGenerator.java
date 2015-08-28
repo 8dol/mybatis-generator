@@ -38,6 +38,15 @@ public class EmptyJavaClientGenerator extends AbstractJavaClientGenerator {
                 introspectedTable.getMyBatis3JavaMapperType());
         Interface interfaze = new Interface(type);
         interfaze.setVisibility(JavaVisibility.PUBLIC);
+
+        FullyQualifiedJavaType javaType = new FullyQualifiedJavaType("com.edol.data.mapper.CrudMapper");
+        interfaze.addImportedType(javaType);
+
+        javaType.addTypeArgument(new FullyQualifiedJavaType(
+                introspectedTable.getBaseRecordType()));
+        javaType.addTypeArgument(new FullyQualifiedJavaType("Integer"));
+
+        interfaze.addSuperInterface(javaType);
         commentGenerator.addJavaFileComment(interfaze);
 
         String rootInterface = introspectedTable
