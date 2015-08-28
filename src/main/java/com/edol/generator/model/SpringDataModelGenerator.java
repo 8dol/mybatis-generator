@@ -120,7 +120,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
     }
 
     private TopLevelEnumeration addEnumerateClass(List<CompilationUnit> answer, String enumString, Field field, IntrospectedColumn introspectedColumn, TopLevelClass topLevelClass) {
-        String enumClassName = getEnumClassName(enumString, field);
+        String enumClassName = getEnumClassName(enumString, field).trim();
         FullyQualifiedJavaType type = new FullyQualifiedJavaType(
                 topLevelClass.getType().getPackageName() + "." + enumClassName);
 
@@ -160,7 +160,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         Arrays.asList(enumStr.split(";")).forEach(x -> {
             String[] splitEnum = x.split(",");
             if (splitEnum.length == 3) {
-                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s)", splitEnum[2], splitEnum[1].toUpperCase(), splitEnum[0]));
+                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s)", splitEnum[2].trim(), splitEnum[1].toUpperCase().trim(), splitEnum[0].trim()));
             }
         });
 
