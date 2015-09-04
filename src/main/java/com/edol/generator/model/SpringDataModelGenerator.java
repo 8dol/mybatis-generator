@@ -137,20 +137,34 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         value.setVisibility(JavaVisibility.PRIVATE);
         enumClass.addField(value);
 
+        // add private String name
+        Field nameField = new Field("name", FullyQualifiedJavaType.getStringInstance());
+        nameField.setVisibility(JavaVisibility.PRIVATE);
+        enumClass.addField(nameField);
+
         // add constructor method
         Method constructor = new Method(enumClassName);
         constructor.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(), "value"));
+        constructor.addParameter(new Parameter(FullyQualifiedJavaType.getStringInstance(), "name"));
         constructor.setConstructor(true);
         constructor.addBodyLine("this.value = value;");
+        constructor.addBodyLine("this.name = name;");
         enumClass.addMethod(constructor);
 
-        // add method
+        // add method getIntValue
         Method getIntValue = new Method("getIntValue");
         getIntValue.addAnnotation("@Override");
         getIntValue.setVisibility(JavaVisibility.PUBLIC);
         getIntValue.setReturnType(FullyQualifiedJavaType.getIntInstance());
         getIntValue.addBodyLine("return value;");
         enumClass.addMethod(getIntValue);
+
+        // add method getName
+        Method getName = new Method("getName");
+        getName.setVisibility(JavaVisibility.PUBLIC);
+        getName.setReturnType(FullyQualifiedJavaType.getStringInstance());
+        getName.addBodyLine("return name;");
+        enumClass.addMethod(getName);
 
         String enumStr = enumString;
         if (enumStr.indexOf(":") > 0) {
@@ -160,7 +174,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         Arrays.asList(enumStr.split(";")).forEach(x -> {
             String[] splitEnum = x.split(",");
             if (splitEnum.length == 3) {
-                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s)", splitEnum[2].trim(), splitEnum[1].toUpperCase().trim(), splitEnum[0].trim()));
+                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s, \"%s\")", splitEnum[2].trim(), splitEnum[1].toUpperCase().trim(), splitEnum[0].trim(), splitEnum[2].trim()));
             }
         });
 
