@@ -62,8 +62,14 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             }
         }
 
+        // add lombok
         topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.Data"));
         topLevelClass.addAnnotation("@Data");
+
+        // add java.io.Serializable
+        FullyQualifiedJavaType serializableType = new FullyQualifiedJavaType("java.io.Serializable");
+        topLevelClass.addImportedType(serializableType);
+        topLevelClass.addSuperInterface(serializableType);
 
         String rootClass = getRootClass();
         for (IntrospectedColumn introspectedColumn : introspectedColumns) {
