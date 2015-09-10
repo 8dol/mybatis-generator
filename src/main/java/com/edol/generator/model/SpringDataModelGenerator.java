@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
@@ -104,8 +105,10 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             } else {
                 Matcher matcher = Enumerate_Matcher.matcher(remarks);
                 if (matcher.find()) {
-                    TopLevelEnumeration enumeration = addEnumerateClass(answer, matcher.group(1), field, introspectedColumn, topLevelClass);
-                    field.setType(enumeration.getType());
+                    TopLevelEnumeration enumeration = addEnumerateClass(answer, matcher.group(1), field, topLevelClass);
+                    if (enumeration != null) {
+                        field.setType(enumeration.getType());
+                    }
                 }
             }
 
@@ -125,13 +128,33 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         return answer;
     }
 
-    private TopLevelEnumeration addEnumerateClass(List<CompilationUnit> answer, String enumString, Field field, IntrospectedColumn introspectedColumn, TopLevelClass topLevelClass) {
-        String enumClassName = getEnumClassName(enumString, field).trim();
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(
-                topLevelClass.getType().getPackageName() + "." + enumClassName);
+    private TopLevelEnumeration addEnumerateClass(List<CompilationUnit> answer, String enumString, Field field, TopLevelClass topLevelClass) {
+        FullyQualifiedJavaType topEnumType = getTopEnumType(enumString, field, topLevelClass);
+        if (topEnumType == null) {
+            return null;
+        }
 
-        TopLevelEnumeration enumClass = new TopLevelEnumeration(type);
+        TopLevelEnumeration enumClass = new TopLevelEnumeration(topEnumType);
         enumClass.setVisibility(JavaVisibility.PUBLIC);
+
+
+        String enumStr = enumString;
+        if (enumStr.indexOf(":") > 0) {
+            // no enum, return immediate
+            if (enumString.split(":").length == 1) {
+                return enumClass;
+            } else {
+                enumStr = enumString.split(":")[1].trim();
+            }
+        }
+
+        // add enum item
+        Arrays.asList(enumStr.split(";")).forEach(x -> {
+            String[] splitEnum = x.split(",");
+            if (splitEnum.length == 3) {
+                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s, \"%s\")", splitEnum[2].trim(), splitEnum[1].toUpperCase().trim(), splitEnum[0].trim(), splitEnum[2].trim()));
+            }
+        });
 
         // add implement class
         FullyQualifiedJavaType dbenum = new FullyQualifiedJavaType("com.edol.data.type.DBEnum");
@@ -149,6 +172,10 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         enumClass.addField(nameField);
 
         // add constructor method
+        String enumClassName = getEnumClassName(enumString, field).trim();
+        if (enumClassName.indexOf(".") >= 0) {
+            enumClassName = enumClassName.substring(enumClassName.lastIndexOf(".") + 1, enumClassName.length());
+        }
         Method constructor = new Method(enumClassName);
         constructor.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(), "value"));
         constructor.addParameter(new Parameter(FullyQualifiedJavaType.getStringInstance(), "name"));
@@ -172,20 +199,32 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         getName.addBodyLine("return name;");
         enumClass.addMethod(getName);
 
-        String enumStr = enumString;
-        if (enumStr.indexOf(":") > 0) {
-            enumStr = enumString.split(":")[1];
-        }
-
-        Arrays.asList(enumStr.split(";")).forEach(x -> {
-            String[] splitEnum = x.split(",");
-            if (splitEnum.length == 3) {
-                enumClass.addEnumConstant(String.format("\n    /**\n     * %s\n     */\n    %s(%s, \"%s\")", splitEnum[2].trim(), splitEnum[1].toUpperCase().trim(), splitEnum[0].trim(), splitEnum[2].trim()));
-            }
-        });
-
         answer.add(enumClass);
         return enumClass;
+    }
+
+    protected FullyQualifiedJavaType getTopEnumType(String enumString, Field field, TopLevelClass topLevelClass) {
+        String enumClassName = getEnumClassName(enumString, field).trim();
+        String packageName = topLevelClass.getType().getPackageName();
+
+        String packageClassName;
+
+        if (enumClassName.indexOf(".") > 0) {
+            String[] enumClassNameArr = enumClassName.split("\\.");
+            String[] packageNameArr = packageName.split("\\.");
+            if (enumClassNameArr.length >= packageNameArr.length) {
+                packageClassName = enumClassName;
+            } else {
+                List<String> packageClassList = new ArrayList<>();
+                packageClassList.addAll(Arrays.asList(packageNameArr).subList(0, packageNameArr.length - enumClassNameArr.length + 1));
+                packageClassList.addAll(Arrays.asList(enumClassNameArr));
+                packageClassName = packageClassList.stream().collect(Collectors.joining("."));
+            }
+        } else {
+            packageClassName = packageName + "." + enumClassName;
+        }
+
+        return new FullyQualifiedJavaType(packageClassName);
     }
 
     private String getEnumClassName(String enumString, Field field) {

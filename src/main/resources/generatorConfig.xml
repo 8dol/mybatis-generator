@@ -37,20 +37,29 @@ mvn clean install;mvn mybatis-generator:generate
             <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
-        <table tableName="t_rules" domainObjectName="rule.Rule" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        <table tableName="t_rules" domainObjectName="rule.Rule">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="t_rule_item_groups" domainObjectName="rule.RuleGroup" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        <table tableName="t_user_materials" domainObjectName="rule.Material">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="t_rule_items" domainObjectName="rule.RuleReward" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        <table tableName="t_rule_item_groups" domainObjectName="rule.RuleItemGroup">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="t_user_materials" domainObjectName="rule.Material" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        <table tableName="t_rule_items" domainObjectName="rule.RuleItem">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <table tableName="t_material_templates" domainObjectName="rule.MaterialTemplate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="t_user_states" domainObjectName="user.UserStates">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
     </context>
 </generatorConfiguration>
