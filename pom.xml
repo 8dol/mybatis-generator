@@ -5,7 +5,7 @@
 
     <groupId>com.edol</groupId>
     <artifactId>mybatis-generator</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>mybatis-generator</name>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.edol.data</groupId>
             <artifactId>spring-data-mybatis</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.4-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

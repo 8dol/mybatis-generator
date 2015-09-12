@@ -1,5 +1,6 @@
 package com.edol.generator.xmlmapper;
 
+import com.edol.generator.xmlmapper.elements.BatchInsertElementGenerator;
 import com.edol.generator.xmlmapper.elements.SimpleFieldsSqlElementGenerator;
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -33,6 +34,7 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
         addResultMapElement(answer);
         addDeleteByPrimaryKeyElement(answer);
         addInsertElement(answer);
+        addBatchInsertElement(answer);
         addUpdateByPrimaryKeyElement(answer);
         addSelectByPrimaryKeyElement(answer);
         addSelectAllElement(answer);
@@ -76,6 +78,13 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
     protected void addInsertElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateInsert()) {
             AbstractXmlElementGenerator elementGenerator = new InsertElementGenerator(true);
+            initializeAndExecuteGenerator(elementGenerator, parentElement);
+        }
+    }
+
+    protected void addBatchInsertElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateInsert()) {
+            AbstractXmlElementGenerator elementGenerator = new BatchInsertElementGenerator(true);
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
