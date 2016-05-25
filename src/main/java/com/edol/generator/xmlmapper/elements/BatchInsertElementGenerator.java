@@ -2,15 +2,12 @@ package com.edol.generator.xmlmapper.elements;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.internal.util.StringUtility;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,19 +23,9 @@ public class BatchInsertElementGenerator extends AbstractXmlElementGenerator {
         this.isSimple = isSimple;
     }
 
-    public BatchInsertElementGenerator() {
-        super();
-    }
-
     public void addElements(XmlElement parentElement) {
         XmlElement answer = new XmlElement("insert");
         answer.addAttribute(new Attribute("id", "batchInsert"));
-        FullyQualifiedJavaType parameterType;
-        if (this.isSimple) {
-            parameterType = new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType());
-        } else {
-            parameterType = this.introspectedTable.getRules().calculateAllFieldsClass();
-        }
 
         answer.addAttribute(new Attribute("parameterType", "java.util.List"));
         this.context.getCommentGenerator().addComment(answer);
